@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ja"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>ARスタンプラリー</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+<div id="arlayer"></div>
+
+<!-- カメラ画面 -->
+<div id="cam" class="screen">
+  <div class="topbar"><div id="cnt" class="pill"></div><button id="btnBook" class="btn small"></button></div>
+  <div id="look" class="lookbadge"></div>
+  <div id="dbg"></div>
+  <div id="finBtnWrap"></div>
+</div>
+
+<!-- オープニング -->
+<div id="op" class="screen on"></div>
+
+<!-- エンディング -->
+<div id="end" class="screen"></div>
+
+<!-- あそびかた -->
+<div id="howto" class="screen">
+  <div id="hwCards"></div>
+  <img class="hwGuide" src="img/guide.svg" alt="">
+  <button id="btnGo" class="btn big"></button>
+</div>
+
+<!-- ゲーム -->
+<div id="game" class="screen">
+  <div class="gtop"><div id="gtitle" class="gtitle"></div><button id="btnClose" class="btn small"></button></div>
+  <div id="stage"></div>
+  <div id="ghint" class="ghint"></div>
+  <div id="quizbox"></div>
+</div>
+
+<!-- クリア -->
+<div id="clear" class="screen"></div>
+
+<!-- スタンプ帳 -->
+<div id="book" class="screen"></div>
+
+<div id="rot"><div class="ic">📱</div><div id="rotTxt"></div></div>
+
+<script src="data.js"></script>
+<script src="games.js"></script>
+<script src="story.js"></script>
+<script src="app.js"></script>
+</body></html>
