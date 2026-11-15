@@ -75,7 +75,7 @@ GAMES[2]=function(cx){
   for(var i=0;i<16;i++){var s=document.createElement('div');s.textContent=['✨','🍓','⭐'][i%3];s.style.cssText='position:absolute;font-size:'+(4+Math.random()*4)+'vh;left:'+(Math.random()*90+2)+'%;top:'+(Math.random()*80+5)+'%;animation:bounce '+(.6+Math.random()*.6)+'s ease-in-out infinite';cx.stage.appendChild(s)}
   cx.hint('いちごがあらわれた!');setTimeout(cx.done,2200)})};
 
-/* 4 トマト:くもったガラスをふく */
+/* 4 トマト:くもったビニールをふく */
 GAMES[3]=function(cx){
  var sc=mk(cx.stage),g=sc.g,w=sc.w,h=sc.h,fg=mk(cx.stage),f=fg.g,tm=loadImg('img/friend4.svg');
  function scene(){var gr=g.createLinearGradient(0,0,0,h);gr.addColorStop(0,'#CFEFFF');gr.addColorStop(.62,'#E8F7E4');gr.addColorStop(.62,'#B98B5E');gr.addColorStop(1,'#9E7440');g.fillStyle=gr;g.fillRect(0,0,w,h);
