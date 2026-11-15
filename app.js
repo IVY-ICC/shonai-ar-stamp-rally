@@ -2,6 +2,7 @@
 var $=function(s){return document.querySelector(s)};
 var DEBUG=/[?&]debug/.test(location.search), SKIP=/[?&]skip/.test(location.search);
 var KEY='tsr_stamps_v1';
+if(/[?&]reset/.test(location.search)){try{localStorage.removeItem(KEY)}catch(e){}try{history.replaceState(null,'',location.pathname)}catch(e){}}
 var AFRAME_URL='https://cdnjs.cloudflare.com/ajax/libs/aframe/1.4.2/aframe.min.js';
 var MIND_URL='https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js';
 var st=(function(){try{var v=JSON.parse(localStorage.getItem(KEY));if(v&&v.s&&v.s.length===9)return v}catch(e){}return{s:[0,0,0,0,0,0,0,0,0],f:0}})();
