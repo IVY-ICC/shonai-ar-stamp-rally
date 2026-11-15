@@ -32,11 +32,11 @@ GAMES[0]=function(cx){
   ps.forEach(function(p){var d=Math.hypot(q.x-p.x,q.y-p.y);if(d<bd){bd=d;best=p}});
   if(best&&bd<best.s*1.05){if(best.gold){found=true;cx.hint('見つけた!');setTimeout(function(){cx.quiz()},900)}else{best.sh=8;wrong++;if(wrong%2===0)cx.hint('それはふつうの梨だよ。金色にかがやく梨をさがそう。')}}})};
 
-/* 2 なす:はさみで切る */
+/* 2 なす:はさみでとる */
 GAMES[1]=function(cx){
  var m=mk(cx.stage),g=m.g,w=m.w,h=m.h,N=5,es=[],by=h*.23,sl=h*.1,rx=Math.min(h*.075,w*.045),ry=rx*2.1,cutN=0,trail=[],last=null,fin=false,bY=h*.78;
  for(var i=0;i<N;i++)es.push({x:w*(.14+.72*i/(N-1)),y:by+sl+ry,vy:0,rot:0,cut:false,land:false,lx:0});
- var bk=badge(cx.stage,'切ったなす 0 / 3');
+ var bk=badge(cx.stage,'とれたなす 0 / 3');
  function eggplant(e){g.save();g.translate(e.x,e.y);g.rotate(e.rot);
   g.fillStyle='#8B6FD6';g.strokeStyle='#5B45A8';g.lineWidth=3;g.beginPath();g.ellipse(0,0,rx,ry,0,0,7);g.fill();g.stroke();
   g.fillStyle='rgba(255,255,255,.35)';g.beginPath();g.ellipse(-rx*.4,-ry*.2,rx*.16,ry*.4,.1,0,7);g.fill();
@@ -62,8 +62,8 @@ GAMES[1]=function(cx){
   if(last){g.font=(h*.07)+'px sans-serif';g.fillText('✂️',last.x-h*.03,last.y+h*.02)}});
  function cutTest(a,b){if(fin)return;es.forEach(function(e){if(e.cut||cutN>=3)return;var lo=Math.min(a.x,b.x)-8,hi=Math.max(a.x,b.x)+8;
    if(e.x<lo||e.x>hi)return;var t=(b.x===a.x)?0:Math.max(0,Math.min(1,(e.x-a.x)/(b.x-a.x))),y=a.y+t*(b.y-a.y);
-   if(y>by-10&&y<by+sl+ry*.5){e.cut=true;cutN++;bk.textContent='切ったなす '+cutN+' / 3';
-    if(cutN>=3){fin=true;cx.hint('3本切れた!');setTimeout(function(){cx.quiz()},1400)}}})}
+   if(y>by-10&&y<by+sl+ry*.5){e.cut=true;cutN++;bk.textContent='とれたなす '+cutN+' / 3';
+    if(cutN>=3){fin=true;cx.hint('3本とれた!');setTimeout(function(){cx.quiz()},1400)}}})}
  m.c.addEventListener('pointerdown',function(e){last=PT(e,m.c);trail=[{x:last.x,y:last.y,t:performance.now()}];m.c.setPointerCapture(e.pointerId)});
  m.c.addEventListener('pointermove',function(e){if(!last)return;var p=PT(e,m.c);cutTest(last,p);last=p;trail.push({x:p.x,y:p.y,t:performance.now()})});
  ['pointerup','pointercancel'].forEach(function(n){m.c.addEventListener(n,function(){last=null})})};
