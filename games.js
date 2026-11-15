@@ -101,18 +101,34 @@ GAMES[4]=function(cx){
  cells.forEach(function(c){c.addEventListener('click',function(){if(pc>=3||c.classList.contains('pulled'))return;c.classList.add('pulled');pc++;bd.textContent='ぬいた数 '+pc+' / 3';
   if(pc>=3){cx.hint('3束ぬけた!');setTimeout(function(){cx.quiz()},1000)}else cx.hint('あと '+(3-pc)+'束ぬこう。')})})};
 
-/* 6 ゆず:試験紙 */
+/* 6 ゆず:リトマス試験紙(青・赤の2まい。どちらからでもOK。つけて2.5秒でじどうで終わる) */
 GAMES[5]=function(cx){
- cx.stage.innerHTML='<div class="yzbowl"><span>ゆずの果じゅう ▼</span></div><img src="img/friend6.svg" alt="" style="position:absolute;right:46%;bottom:4%;height:32%"><div class="strip"><b>試<br>験<br>紙</b><i></i></div><div class="yzarrow">試験紙を、ゆずの果じゅうにつけよう。</div>';
- var s=cx.stage.querySelector('.strip'),bw=cx.stage.querySelector('.yzbowl'),ar=cx.stage.querySelector('.yzarrow'),dr=false,ox=0,oy=0,red=false,wt=null,done=false;
- function inBowl(){var a=s.getBoundingClientRect(),b=bw.getBoundingClientRect(),cxp=a.left+a.width/2,cyp=a.bottom;return cxp>b.left&&cxp<b.right&&cyp>b.top+b.height*.2&&cyp<b.bottom}
- function check(){if(done||red)return;if(dr&&inBowl()){if(!wt){cx.hint('そのまま、指をはなさずに待ってね…');wt=setTimeout(function(){wt=null;if(dr&&inBowl()){red=true;s.classList.add('red');ar.style.display='none';cx.hint('試験紙が赤くなった!指をはなそう。')}},1400)}}else if(wt){clearTimeout(wt);wt=null;cx.hint('試験紙を、ゆずの果じゅうにつけよう。')}}
- s.addEventListener('pointerdown',function(e){if(done)return;dr=true;var r=s.getBoundingClientRect();ox=e.clientX-r.left;oy=e.clientY-r.top;s.setPointerCapture(e.pointerId);ar.style.display='none'});
- s.addEventListener('pointermove',function(e){if(!dr)return;var sr=cx.stage.getBoundingClientRect();s.style.left=(e.clientX-sr.left-ox)+'px';s.style.top=(e.clientY-sr.top-oy)+'px';check()});
- function up(){if(!dr)return;dr=false;if(wt){clearTimeout(wt);wt=null}
-  if(red){done=true;cx.hint('赤くなったね!ゆずの果じゅうの性質は…?');setTimeout(function(){cx.quiz()},1000)}
-  else if(!inBowl()){ar.style.display='block'}else{cx.hint('もう一度、つけたまま少し待ってね。')}}
- s.addEventListener('pointerup',up);s.addEventListener('pointercancel',up)};
+ var SP=[{k:'blue',x:'6%',n:'青リトマス紙',res:'赤くなったよ!',chg:true},{k:'red',x:'21%',n:'赤リトマス紙',res:'ぜんぜん変わらないね!',chg:false}];
+ cx.stage.innerHTML='<div class="yzbowl"><span>ゆずの果じゅう</span></div><img src="img/friend6.svg" alt="" style="position:absolute;right:46%;bottom:4%;height:32%"><div class="yzgauge"><i></i></div><div class="yzarrow">ここにつけよう ▼</div>'+
+  SP.map(function(o,i){return '<div class="strip lt lt-'+o.k+'" style="left:'+o.x+'"><i></i></div><div class="ltc" style="left:calc('+o.x+' - 3vh)">'+o.n+'<em></em></div>'}).join('');
+ var bw=cx.stage.querySelector('.yzbowl'),gg=cx.stage.querySelector('.yzgauge'),gi=gg.querySelector('i'),ar=cx.stage.querySelector('.yzarrow'),
+  strips=cx.stage.querySelectorAll('.strip'),caps=cx.stage.querySelectorAll('.ltc'),doneN=0,active=false,tms=[];
+ cx.cleanups.push(function(){tms.forEach(function(t){clearInterval(t)})});
+ function inBowl(s){var a=s.getBoundingClientRect(),b=bw.getBoundingClientRect(),x=a.left+a.width/2,y=a.bottom;return x>b.left&&x<b.right&&y>b.top+b.height*.2&&y<b.bottom}
+ function summary(){var d=document.createElement('div');d.className='ltsum';
+  d.innerHTML='<b>しらべたけっか</b><div>青リトマス紙 → <span class="r">赤</span>に変わった</div><div>赤リトマス紙 → 変わらなかった</div><button type="button">つぎへ</button>';
+  cx.stage.appendChild(d);cx.hint('2まいとも、しらべたね!けっかを見てみよう。');
+  d.querySelector('button').addEventListener('click',function(){d.remove();cx.quiz()})}
+ strips.forEach(function(s,idx){var o=SP[idx],dr=false,ox=0,oy=0,fin=false,t0=0,tm=null,pid=0;
+  function stop(){if(tm){clearInterval(tm);tm=null}gg.style.display='none';gi.style.width='0'}
+  function home(){s.style.transition='left .35s,top .35s';s.style.left=o.x;s.style.top='';setTimeout(function(){s.style.transition=''},400)}
+  function finish(){stop();fin=true;dr=false;active=false;if(o.chg)s.classList.add('red');
+   caps[idx].querySelector('em').textContent=o.res;caps[idx].classList.add('ok');try{s.releasePointerCapture(pid)}catch(e){}
+   doneN++;cx.hint((o.chg?'赤くなった!':'ぜんぜん変わらないね!')+(doneN<2?' もう1まいも、しらべよう。':''));
+   setTimeout(home,500);if(doneN===2)setTimeout(summary,1700)}
+  function tick(){var p=Math.min(1,(performance.now()-t0)/2500);gi.style.width=(p*100)+'%';if(p>=1)finish()}
+  function check(){if(fin)return;
+   if(dr&&inBowl(s)){if(!tm){t0=performance.now();gg.style.display='block';cx.hint('しらべ中…そのまま、まってね。');tm=setInterval(tick,40);tms.push(tm)}}
+   else if(tm){stop();cx.hint('リトマス紙を、ゆずの果じゅうにつけよう。')}}
+  s.addEventListener('pointerdown',function(e){if(fin||active)return;active=true;dr=true;pid=e.pointerId;s.style.transition='';var r=s.getBoundingClientRect();ox=e.clientX-r.left;oy=e.clientY-r.top;s.setPointerCapture(pid);ar.style.display='none'});
+  s.addEventListener('pointermove',function(e){if(!dr)return;var sr=cx.stage.getBoundingClientRect();s.style.left=(e.clientX-sr.left-ox)+'px';s.style.top=(e.clientY-sr.top-oy)+'px';check()});
+  function up(){if(!dr)return;dr=false;active=false;if(tm){stop();cx.hint('もう少し、つけておこう。')}else if(!fin)cx.hint('リトマス紙を、ゆずの果じゅうにつけよう。');if(!fin)home()}
+  s.addEventListener('pointerup',up);s.addEventListener('pointercancel',up)})};
 
 /* 7 ブルーベリー:うらにも続く迷路 */
 GAMES[6]=function(cx){

@@ -197,3 +197,19 @@ html,body{height:100%;overflow:hidden;background:#BFE3F7;font-family:"Hiragino M
 .dpad.pulse button{animation:dpp 1s ease-in-out infinite;border-color:#E8564A}
 @keyframes dpp{50%{transform:scale(1.14);background:#FFE9E4}}
 .dplabel{position:absolute;right:2vh;bottom:.6vh;width:28vh;text-align:center;font-weight:900;font-size:2.4vh;color:#D2547A}
+
+/* ゆず:リトマス試験紙 */
+.strip.lt{top:16%}
+.strip.lt-blue i{background:#4F86E8}
+.strip.lt-red i{background:#E85C3C}
+.strip.lt-blue.red i{background:#E85C3C}
+.strip.lt i{height:100%;left:0;right:0;bottom:0;border-radius:.6vh}
+.ltc{position:absolute;top:calc(16% + 26.5vh);width:15vh;text-align:center;font-weight:900;font-size:2.3vh;color:#4A4E7A;line-height:1.3}
+.ltc em{display:block;font-style:normal;font-size:2.1vh;color:#D2547A;min-height:2.7vh}
+.yzgauge{position:absolute;right:12%;top:79%;width:34%;height:2.6vh;background:#fff;border:.4vh solid #F2B93B;border-radius:2vh;overflow:hidden;display:none;z-index:4}
+.yzgauge i{display:block;height:100%;width:0;background:#F2B93B}
+.yzarrow{left:auto;right:14%;top:10%}
+.ltsum{position:absolute;width:max-content;left:68%;top:46%;transform:translate(-50%,-50%);background:#fff;border:.6vh solid #F2B93B;border-radius:2vh;padding:3vh 4vh;text-align:center;font-size:3vh;font-weight:900;line-height:1.8;box-shadow:0 1vh 3vh rgba(0,0,0,.35);z-index:8}
+.ltsum b{display:block;color:#D2547A;margin-bottom:1vh}
+.ltsum .r{color:#E85C3C}
+.ltsum button{margin-top:2vh;font-size:3vh;font-weight:900;padding:1.2vh 5vh;border:0;border-radius:3vh;background:#F58BA5;color:#fff}
